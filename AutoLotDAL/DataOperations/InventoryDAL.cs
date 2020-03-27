@@ -96,12 +96,38 @@ namespace AutoLotDAL.DataOperations
         {
             OpenConnection();
             // Format and execute SQL statement.
-            string sql = $"Insert Into Inventory (Make, Color, PetName) Values ('{car.Make}', '{car.Color}', '{car.PetName}')";
+            string sql = $"Insert Into Inventory (Make, Color, PetName) Values (@Make, @Color, @PetName)";
 
             // Execute using our connection.
             using (SqlCommand command = new SqlCommand(sql, _sqlConnection))
             {
-                command.CommandType = CommandType.Text;
+                // Fill params collection.
+                SqlParameter parameter = new SqlParameter
+                {
+                    ParameterName = "@Make",
+                    Value = car.Make,
+                    SqlDbType = SqlDbType.Char,
+                    Size = 10
+                };
+                command.Parameters.Add(parameter);
+
+                parameter = new SqlParameter
+                {
+                    ParameterName = "@Color",
+                    Value = car.Color,
+                    SqlDbType = SqlDbType.Char,
+                    Size = 10
+                };
+                command.Parameters.Add(parameter);
+
+                parameter = new SqlParameter
+                {
+                    ParameterName = "@PetName",
+                    Value = car.PetName,
+                    SqlDbType = SqlDbType.Char,
+                    Size = 10
+                };
+                command.Parameters.Add(parameter);
                 command.ExecuteNonQuery();
             }
             CloseConnection();
@@ -123,6 +149,17 @@ namespace AutoLotDAL.DataOperations
                     Exception error = new Exception("Sorry! That car is on order!", ex);
                     throw error;
                 }
+            }
+            CloseConnection();
+        }
+        public void UpdateCarPetName(int id, string newPetName)
+        {
+            OpenConnection();
+            // Get ID of car to modify the pet name.
+            string sql = $"Update Inventory Set PetName = '{newPetName}' Where CarId = '{id}'";
+            using (SqlCommand command = new SqlCommand(sql, _sqlConnection))
+            {
+                command.ExecuteNonQuery();
             }
             CloseConnection();
         }
