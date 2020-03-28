@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AutoLotDAL.BulkImport
 {
-    class ProcessBulkImport
+    public class ProcessBulkImport
     {
         private static SqlConnection _sqlConnection = null;
         private static readonly string _connectionString = @"Data Source = (localdb)\mssqllocaldb;Integrated Security=true;Initial Catalog=Autolot";
@@ -26,7 +23,7 @@ namespace AutoLotDAL.BulkImport
                 _sqlConnection?.Close();
             }
         }
-        private static void ExecuteBulkImport<T>(IEnumerable<T> records, string tableName)
+        public static void ExecuteBulkImport<T>(IEnumerable<T> records, string tableName)
         {
             OpenConnection();
             using (SqlConnection conn = _sqlConnection)
