@@ -44,12 +44,15 @@ namespace AutoLotClient
             var petName = dal.LookUpPetName(car.CarId);
             Console.WriteLine("***** New Car *****");
             Console.WriteLine($"Car pet name: {petName}");
+            MoveCustomer();
+            DoBulkCopy();
             Console.Write("Press enter to continue...");
+
             Console.ReadLine();
         }
         public static void MoveCustomer()
         {
-            Console.WriteLine("***** Simple Transactrion Example *****\n");
+            Console.WriteLine("***** Simple Transaction Example *****\n");
 
             // A simple way to all the tx to succeed or not.
             bool throwEx = true;

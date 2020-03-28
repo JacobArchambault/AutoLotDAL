@@ -136,7 +136,7 @@ namespace AutoLotDAL.DataOperations
         {
             OpenConnection();
             // Get ID of car to delet, then do so.
-            string sql = $"Delete from Inventory where CarId = '{id}'";
+            string sql = $"Delete from Inventory where CarId = {id}";
             using (SqlCommand command = new SqlCommand(sql, _sqlConnection))
             {
                 try
