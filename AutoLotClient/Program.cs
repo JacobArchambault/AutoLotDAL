@@ -45,5 +45,25 @@ namespace AutoLotClient
             Console.Write("Press enter to continue...");
             Console.ReadLine();
         }
+        public static void MoveCustomer()
+        {
+            Console.WriteLine("***** Simple Transactrion Example *****\n");
+
+            // A simple way to all the tx to succeed or not.
+            bool throwEx = true;
+
+            Console.Write("Do you want to throw an exception (Y or N): ");
+            var userAnswer = Console.ReadLine();
+            if (userAnswer?.ToLower() == "n")
+            {
+                throwEx = false;
+            }
+
+            var dal = new InventoryDAL();
+            // Process customer 1 - enter the id for the customer to move.
+            dal.ProcessCreditRisk(throwEx, 1);
+            Console.WriteLine("Check CreditRisk table for results");
+            Console.ReadLine();
+        }
     }
 }
