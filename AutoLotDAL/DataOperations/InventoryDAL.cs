@@ -14,7 +14,7 @@ namespace AutoLotDAL.DataOperations
     {
         private readonly string _connectionString;
         private SqlConnection _sqlConnection = null;
-        public InventoryDAL() : this(@"Data Source = (localdb)\mssqllocaldb;IntegratedSecurity=true;Initial Catalog=AutoLot")
+        public InventoryDAL() : this(@"Data Source = (localdb)\mssqllocaldb;Integrated Security=true;Initial Catalog=AutoLot")
         { }
         public InventoryDAL(string connectionString) => _connectionString = connectionString;
 
