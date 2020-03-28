@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BulkImport\IMyDataReader.cs" />
     <Compile Include="BulkImport\MyDataReader.cs" />
+    <Compile Include="BulkImport\ProcessBulkImport.cs" />
     <Compile Include="DataOperations\InventoryDAL.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

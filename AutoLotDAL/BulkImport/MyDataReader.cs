@@ -15,12 +15,13 @@ namespace AutoLotDAL.BulkImport
 
         public List<T> Records { get; set; }
 
-        public MyDataReader()
+        public MyDataReader(List<T> list)
         {
             _propertyInfos = typeof(T).GetProperties();
             _nameDictionary = _propertyInfos
                 .Select((x, index) => new { x.Name, index })
                 .ToDictionary(pair => pair.Name, pair => pair.index);
+            Records = list;
         }
         public int Depth => throw new NotImplementedException();
 
