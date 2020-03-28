@@ -202,5 +202,64 @@ namespace AutoLotDAL.DataOperations
             }
             return carPetName;
         }
+        public void ProcessCreditRisk(bool throwEx, int custId)
+        {
+            OpenConnection();
+            // First, look up current name based on customer ID.
+            string fName;
+            string lName;
+            var cmdSelect = new SqlCommand($"Select * from Customers where CustId = {custId}", _sqlConnection);
+            using (var dataReader = cmdSelect.ExecuteReader())
+            {
+                if (dataReader.HasRows)
+                {
+                    dataReader.Read();
+                    fName = (string)dataReader["FirstName"];
+                    lName = (string)dataReader["LastName"];
+                }
+                else
+                {
+                    CloseConnection();
+                    return;
+                }
+            }
+
+            // Create command objects that represent each step of the operation.
+            var cmdRemove = new SqlCommand($"Delete from Customers where CustId = {custId}", _sqlConnection);
+            var cmdInsert = new SqlCommand($"Insert Into CreditRisks (FirstName, LastName) Values('{fName}', '{lName}')", _sqlConnection);
+
+            // We will get this from the connection object.
+            SqlTransaction tx = null;
+            try
+            {
+                tx = _sqlConnection.BeginTransaction();
+
+                // Enlist the commands into this transaction.
+                cmdInsert.Transaction = tx;
+                cmdRemove.Transaction = tx;
+
+                // Execute the commands.
+                cmdInsert.ExecuteNonQuery();
+                cmdRemove.ExecuteNonQuery();
+
+                // Simulate error.
+                if (throwEx)
+                {
+                    throw new Exception("Sorry! Database error! Transaction failed.");
+                }
+                // Commit it.
+                tx.Commit();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                // ANy error will roll back transaction. Using the new conditional access operator to check for null.
+                tx?.Rollback();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }
